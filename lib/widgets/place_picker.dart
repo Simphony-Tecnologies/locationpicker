@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:place_picker/entities/entities.dart';
 import 'package:place_picker/entities/localization_item.dart';
 import 'package:place_picker/widgets/widgets.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../uuid.dart';
 
@@ -183,10 +184,14 @@ class PlacePickerState extends State<PlacePicker> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SelectPlaceAction(getLocationName(), () {
-                      if (Platform.isAndroid) {
-                        _delayedPop();
-                      } else {
+                      if (kIsWeb) {
                         Navigator.of(context).pop(this.locationResult);
+                      } else {
+                        if (Platform.isAndroid) {
+                          _delayedPop();
+                        } else {
+                          Navigator.of(context).pop(this.locationResult);
+                        }
                       }
                     }, widget.localizationItem!.tapToSelectLocation),
                     Divider(height: 8),
